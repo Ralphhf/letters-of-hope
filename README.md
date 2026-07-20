@@ -1,4 +1,4 @@
-# Letters of Hope — Prison Ministry (design prototype)
+# Letters of Hope — Prison Ministry (3 design drafts)
 
 A hosted **design prototype** for Julian Khater's prison-ministry website. This is the visual reference for client approval — the final site will be rebuilt in **Wix Studio**.
 

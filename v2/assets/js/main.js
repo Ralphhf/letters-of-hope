@@ -79,7 +79,7 @@
       "</div>" +
       "</div>" +
       '<div class="footer-bottom"><span>&copy; ' + yr + " Letters of Hope. A prison ministry.</span>" +
-      "<span>Draft A &middot; The Correspondence concept</span></div>" +
+      "<span>Draft B &middot; The Clarity concept</span></div>" +
       "</div></footer>"
     );
   }
