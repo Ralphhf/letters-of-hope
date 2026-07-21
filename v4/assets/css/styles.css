@@ -447,3 +447,22 @@ img.brand-mark { border-radius: 50%; object-fit: cover; background: #fff; }
 }
 
 .mt-0{margin-top:0}.mb-0{margin-bottom:0}
+
+/* ===== Fix: mobile menu must be fully hidden when closed ===== */
+@media (max-width: 1020px) {
+  .nav-links {
+    transform: translateY(-16px); opacity: 0; visibility: hidden; pointer-events: none;
+    transition: transform .28s ease, opacity .28s ease, visibility 0s linear .28s;
+  }
+  .nav-links.open {
+    transform: translateY(0); opacity: 1; visibility: visible; pointer-events: auto;
+    transition: transform .28s ease, opacity .28s ease;
+  }
+}
+
+/* ===== JS polish: scroll reveal + header shadow ===== */
+.rv { opacity: 0; transform: translateY(22px); transition: opacity .65s cubic-bezier(.22,.7,.3,1), transform .65s cubic-bezier(.22,.7,.3,1); }
+.rv-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } }
+.site-header { transition: box-shadow .25s ease; }
+.site-header.scrolled { box-shadow: 0 8px 28px rgba(0,0,0,.14); }

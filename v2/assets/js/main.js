@@ -152,3 +152,92 @@
     initFakeForms();
   });
 })();
+
+/* ===== Polish: scroll reveal, stat counters, header shadow ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function onReady(fn) {
+    if (document.readyState !== "loading") { fn(); }
+    else { document.addEventListener("DOMContentLoaded", fn); }
+  }
+
+  onReady(function () {
+    // Header shadow once the page scrolls
+    var header = document.querySelector(".site-header");
+    if (header) {
+      var onScroll = function () {
+        header.classList.toggle("scrolled", (window.scrollY || 0) > 8);
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    }
+
+    if (reduce || !("IntersectionObserver" in window)) return;
+
+    // Scroll reveal with a light stagger
+    var sel = [
+      ".card", ".envelope", ".post-card", ".tl-step", ".roman", ".stack-item",
+      ".dir-row", ".roll-row", ".bigstat", ".stat", ".qa", ".section-head",
+      ".letter-card", ".quote-chip", ".gold-frame", ".cta-band", ".chapter",
+      ".split > *", ".hero h1", ".hero .lede", ".hero-actions",
+      ".poster h1", ".poster-foot", ".hero-full h1", ".hero-full .lede",
+      ".hero-split h1", ".photo-frame", ".stat-strip", ".directory", ".zig > *"
+    ].join(",");
+    var els = Array.prototype.slice.call(document.querySelectorAll(sel));
+    els.forEach(function (el) { el.classList.add("rv"); });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        var sibs = el.parentNode ? Array.prototype.filter.call(el.parentNode.children, function (c) {
+          return c.classList && c.classList.contains("rv");
+        }) : [];
+        var idx = sibs.indexOf(el);
+        el.style.transitionDelay = (idx > 0 ? Math.min(idx, 7) * 80 : 0) + "ms";
+        el.classList.add("rv-in");
+        io.unobserve(el);
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" });
+    els.forEach(function (el) { io.observe(el); });
+
+    // Safety net: if the observer misses, reveal anything already on screen
+    setTimeout(function () {
+      els.forEach(function (el) {
+        if (el.classList.contains("rv-in")) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < (window.innerHeight || 800) + 40) { el.classList.add("rv-in"); }
+      });
+    }, 1400);
+
+    // Count-up animation for stat numbers
+    function countUp(el) {
+      var full = el.textContent;
+      var m = full.match(/^([\d.]+)([\s\S]*)$/);
+      if (!m) return;
+      var target = parseFloat(m[1]);
+      if (!isFinite(target)) return;
+      var suffix = m[2];
+      var decimals = (m[1].split(".")[1] || "").length;
+      var t0 = null;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / 900, 1);
+        p = 1 - Math.pow(1 - p, 3);
+        el.textContent = (target * p).toFixed(decimals) + suffix;
+        if (p < 1) { requestAnimationFrame(step); } else { el.textContent = full; }
+      }
+      requestAnimationFrame(step);
+    }
+    var statIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        countUp(en.target);
+        statIo.unobserve(en.target);
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll(".stat b, .bigstat b").forEach(function (b) { statIo.observe(b); });
+  });
+})();
