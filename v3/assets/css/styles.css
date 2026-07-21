@@ -439,3 +439,80 @@ img.brand-mark { border-radius: 50%; object-fit: cover; background: #fff; }
 
 .nav-links a { white-space: nowrap; }
 .btn { white-space: nowrap; }
+
+/* ===== Draft C home: cathedral hero, roman steps, stacked list, gold frame ===== */
+.hero-full {
+  position: relative; min-height: 88vh;
+  display: grid; place-items: center; text-align: center;
+  background: var(--midnight); color: var(--paper);
+  padding-block: clamp(4rem, 8vw, 6rem) 5.5rem;
+  overflow: hidden;
+}
+.hero-full::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 45% at 50% 0%, rgba(198,161,91,.20), transparent 62%),
+    radial-gradient(50% 60% at 50% 110%, rgba(24,42,32,.7), transparent 60%);
+  pointer-events: none;
+}
+.hero-full .wrap { position: relative; z-index: 1; max-width: 880px; }
+.hero-full .ornament { color: var(--candle); letter-spacing: .5em; font-size: .85rem; margin-bottom: 1.4rem; }
+.hero-full h1 {
+  font-size: clamp(3rem, 8vw, 5.4rem); color: var(--paper);
+  margin-top: 1rem; line-height: 1.05;
+}
+.hero-full h1 em { font-style: italic; color: var(--candle); }
+.hero-full .lede { color: rgba(245,239,227,.82); margin: 1.4rem auto 0; }
+.hero-full .hero-actions { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: .9rem; }
+.hero-scripture {
+  position: absolute; left: 24px; right: 24px; bottom: 1.8rem; z-index: 1;
+  text-align: center; font-family: var(--font-mono); font-size: .74rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--candle);
+}
+
+.roman-steps { max-width: 680px; margin-inline: auto; text-align: center; }
+.roman { padding: 2.6rem 1rem; border-bottom: 1px solid rgba(198,161,91,.35); }
+.roman:last-child { border-bottom: 0; }
+.roman .numeral { font-family: var(--font-display); font-style: italic; font-size: 1.7rem; color: var(--candle-deep); }
+.roman h3 { font-size: 1.9rem; margin: .4rem 0 .7rem; }
+.roman p { color: var(--ink-soft); max-width: 52ch; margin-inline: auto; }
+
+.stack-list { max-width: 720px; margin-inline: auto; }
+.stack-item { text-align: center; padding: 2.4rem 1rem; border-bottom: 1px solid rgba(198,161,91,.35); }
+.stack-item:last-child { border-bottom: 0; }
+.stack-item h3 { font-size: 2rem; }
+.stack-item .faith-tag { margin: .5rem 0 .8rem; }
+.stack-item p { color: var(--ink-soft); max-width: 50ch; margin-inline: auto; }
+.stack-item address {
+  font-family: var(--font-mono); font-style: normal; font-size: .8rem;
+  color: var(--postmark); margin-top: .9rem; letter-spacing: .04em;
+}
+
+.gold-frame {
+  border: 1px solid var(--candle); outline: 1px solid rgba(198,161,91,.5); outline-offset: 6px;
+  background: var(--paper-3); text-align: center;
+  padding: clamp(2.4rem, 5vw, 3.6rem);
+}
+.gold-frame h2 { font-size: clamp(2rem, 4vw, 2.9rem); margin-top: .8rem; }
+.gold-frame p { color: var(--ink-soft); max-width: 48ch; margin: 1rem auto 1.6rem; }
+
+/* Listings as centered devotional list (write-to-prisoners) */
+.listing-list { display: flex; flex-direction: column; gap: 0; max-width: 720px; margin-inline: auto; }
+.listing-list .envelope {
+  background: transparent; border: 0; border-bottom: 1px solid rgba(198,161,91,.35);
+  box-shadow: none; text-align: center; padding: 2.2rem 1rem;
+}
+.listing-list .envelope:hover { transform: none; box-shadow: none; }
+.listing-list .envelope::before { display: none; }
+.listing-list .envelope .stamp-mini { display: none; }
+.listing-list .envelope h3 { font-size: 1.9rem; }
+.listing-list .envelope address { border-top: 0; max-width: 40ch; margin-inline: auto; }
+
+/* hero-full ghost button must be light on green; cap hero height */
+.hero-full { min-height: min(88vh, 860px); }
+.hero-full .btn-ghost { border-color: rgba(245,239,227,.55); color: var(--paper); }
+.hero-full .btn-ghost:hover { border-color: var(--paper); background: rgba(245,239,227,.1); color: var(--paper); }
+
+/* header ghost button must be light on green bar */
+.site-header .btn-ghost { border-color: rgba(245,239,227,.5); color: var(--paper); }
+.site-header .btn-ghost:hover { border-color: var(--paper); background: rgba(245,239,227,.1); color: var(--paper); }

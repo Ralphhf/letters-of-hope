@@ -1,13 +1,14 @@
-# Letters of Hope — Prison Ministry (3 design drafts)
+# Letters of Hope — Prison Ministry (4 design drafts)
 
-Three hosted **design drafts** for Julian Khater's prison-ministry website — the client picks one, then it gets rebuilt in **Wix Studio**.
+Four hosted **design drafts** for Julian Khater's prison-ministry website — the client picks one, then it gets rebuilt in **Wix Studio**.
 
 - **Draft A "Correspondence"** (root `/`) — aged paper, indigo ink, amber; letter/envelope identity
 - **Draft B "Clarity"** (`/v2/`) — light grey + white, calm blue accent, clean sans, centered hero
 - **Draft C "Sanctuary"** (`/v3/`) — forest green + cream + gold, classical serif, dark header/hero
+- **Draft D "Witness"** (`/v4/`) — bold editorial poster: navy/ivory/gold, giant Anton type, scripture ticker, chapters
 - **Chooser page:** `/drafts.html` — one link showing all three
 
-All 27 pages verified for zero horizontal overflow at 390 px (mobile).
+All 36 pages verified for zero horizontal overflow at 390 px (mobile).
 
 ## Pages
 - `index.html` — Home
