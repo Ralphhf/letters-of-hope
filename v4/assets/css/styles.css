@@ -466,3 +466,42 @@ img.brand-mark { border-radius: 50%; object-fit: cover; background: #fff; }
 @media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } }
 .site-header { transition: box-shadow .25s ease; }
 .site-header.scrolled { box-shadow: 0 8px 28px rgba(0,0,0,.14); }
+
+/* ===== Fancy shared: progress bar, page fade, button shine ===== */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: var(--candle); z-index: 90; pointer-events: none;
+}
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+body { animation: pageIn .45s ease both; }
+body.page-exit { opacity: 0; transition: opacity .28s ease; }
+.btn { position: relative; overflow: hidden; }
+.btn::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,.4), transparent);
+  transform: skewX(-20deg); transition: left .5s ease; pointer-events: none;
+}
+.btn:hover::before { left: 130%; }
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  .btn::before { display: none; }
+}
+
+/* ===== Signature: masked headline lines, film grain, parallax numbers ===== */
+.poster h1 .pl { display: block; overflow: hidden; }
+.poster h1 .pl-in { display: block; transform: translateY(112%); transition: transform .85s cubic-bezier(.19,1,.22,1); }
+.poster h1.play .pl-in { transform: none; }
+body::after {
+  content: ""; position: fixed; inset: -50%; pointer-events: none; z-index: 85; opacity: .045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+  animation: grainShift 1.2s steps(4) infinite;
+}
+@keyframes grainShift {
+  0% { transform: translate(0,0); } 25% { transform: translate(-2%,1%); }
+  50% { transform: translate(1%,-2%); } 75% { transform: translate(-1%,2%); } 100% { transform: translate(0,0); }
+}
+.ch-num { will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  body::after { animation: none; }
+  .poster h1 .pl-in { transform: none; transition: none; }
+}

@@ -535,3 +535,34 @@ img.brand-mark { border-radius: 50%; object-fit: cover; background: #fff; }
 @media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } }
 .site-header { transition: box-shadow .25s ease; }
 .site-header.scrolled { box-shadow: 0 8px 28px rgba(0,0,0,.14); }
+
+/* ===== Fancy shared: progress bar, page fade, button shine ===== */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: var(--candle); z-index: 90; pointer-events: none;
+}
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+body { animation: pageIn .45s ease both; }
+body.page-exit { opacity: 0; transition: opacity .28s ease; }
+.btn { position: relative; overflow: hidden; }
+.btn::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,.4), transparent);
+  transform: skewX(-20deg); transition: left .5s ease; pointer-events: none;
+}
+.btn:hover::before { left: 130%; }
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  .btn::before { display: none; }
+}
+
+/* ===== Signature: candle dust ===== */
+canvas.candle-dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.hero-full .wrap, .hero-scripture { position: relative; z-index: 1; }
+
+/* scripture must not overlap CTAs on small/short screens */
+@media (max-width: 760px), (max-height: 700px) {
+  .hero-full { min-height: 0; }
+  .hero-full { padding-bottom: 3rem; }
+  .hero-scripture { position: static; margin-top: 2.4rem; }
+}

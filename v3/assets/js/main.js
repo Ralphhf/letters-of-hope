@@ -241,3 +241,106 @@
     document.querySelectorAll(".stat b, .bigstat b").forEach(function (b) { statIo.observe(b); });
   });
 })();
+
+/* ===== Fancy shared: scroll progress + page transitions ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function onReady(fn) {
+    if (document.readyState !== "loading") { fn(); } else { document.addEventListener("DOMContentLoaded", fn); }
+  }
+  onReady(function () {
+    // Scroll progress bar
+    var bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.appendChild(bar);
+    function paint() {
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+    }
+    window.addEventListener("scroll", paint, { passive: true });
+    paint();
+
+    // Soft page transitions on internal links
+    if (!reduce) {
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest ? e.target.closest("a") : null;
+        if (!a) return;
+        var href = a.getAttribute("href");
+        if (!href || href.charAt(0) === "#" || a.target === "_blank" ||
+            /^(https?:|mailto:|tel:)/.test(href)) return;
+        e.preventDefault();
+        document.body.classList.add("page-exit");
+        setTimeout(function () { window.location.href = href; }, 260);
+      });
+      window.addEventListener("pageshow", function () {
+        document.body.classList.remove("page-exit");
+      });
+    }
+  });
+})();
+
+/* ===== Signature C: golden candle-dust drifting in the hero ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) return;
+  document.addEventListener("DOMContentLoaded", function () {
+    var hero = document.querySelector(".hero-full");
+    if (!hero) return;
+    var cv = document.createElement("canvas");
+    cv.className = "candle-dust";
+    hero.insertBefore(cv, hero.firstChild);
+    var ctx = cv.getContext("2d");
+    var motes = [], W = 0, H = 0, running = false, raf = null;
+
+    function resize() {
+      W = cv.width = hero.clientWidth;
+      H = cv.height = hero.clientHeight;
+    }
+    function spawn(n) {
+      motes = [];
+      for (var i = 0; i < n; i++) {
+        motes.push({
+          x: Math.random() * W, y: Math.random() * H,
+          r: 0.7 + Math.random() * 1.7,
+          vy: 0.12 + Math.random() * 0.4,
+          drift: Math.random() * Math.PI * 2,
+          ds: 0.003 + Math.random() * 0.008,
+          tw: Math.random() * Math.PI * 2,
+          ts: 0.01 + Math.random() * 0.03
+        });
+      }
+    }
+    function tick() {
+      if (!running) return;
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < motes.length; i++) {
+        var m = motes[i];
+        m.y -= m.vy;
+        m.drift += m.ds;
+        m.tw += m.ts;
+        m.x += Math.sin(m.drift) * 0.35;
+        if (m.y < -6) { m.y = H + 6; m.x = Math.random() * W; }
+        var a = 0.25 + 0.45 * (0.5 + 0.5 * Math.sin(m.tw));
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(219,180,110," + a.toFixed(3) + ")";
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    resize();
+    spawn(Math.min(60, Math.max(28, Math.round(W / 18))));
+    window.addEventListener("resize", function () { resize(); spawn(Math.min(60, Math.max(28, Math.round(W / 18)))); });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && !running) { running = true; tick(); }
+          else if (!en.isIntersecting && running) { running = false; if (raf) cancelAnimationFrame(raf); }
+        });
+      }, { threshold: 0.05 }).observe(hero);
+    } else { running = true; tick(); }
+  });
+})();

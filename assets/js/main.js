@@ -241,3 +241,75 @@
     document.querySelectorAll(".stat b, .bigstat b").forEach(function (b) { statIo.observe(b); });
   });
 })();
+
+/* ===== Fancy shared: scroll progress + page transitions ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function onReady(fn) {
+    if (document.readyState !== "loading") { fn(); } else { document.addEventListener("DOMContentLoaded", fn); }
+  }
+  onReady(function () {
+    // Scroll progress bar
+    var bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.appendChild(bar);
+    function paint() {
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+    }
+    window.addEventListener("scroll", paint, { passive: true });
+    paint();
+
+    // Soft page transitions on internal links
+    if (!reduce) {
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest ? e.target.closest("a") : null;
+        if (!a) return;
+        var href = a.getAttribute("href");
+        if (!href || href.charAt(0) === "#" || a.target === "_blank" ||
+            /^(https?:|mailto:|tel:)/.test(href)) return;
+        e.preventDefault();
+        document.body.classList.add("page-exit");
+        setTimeout(function () { window.location.href = href; }, 260);
+      });
+      window.addEventListener("pageshow", function () {
+        document.body.classList.remove("page-exit");
+      });
+    }
+  });
+})();
+
+/* ===== Signature A: the letter types itself ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || !("IntersectionObserver" in window)) return;
+  document.addEventListener("DOMContentLoaded", function () {
+    var body = document.querySelector(".letter-card .letter-body");
+    if (!body) return;
+    var full = body.textContent;
+    var started = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting || started) return;
+        started = true;
+        io.disconnect();
+        body.textContent = "";
+        body.classList.add("typing");
+        var i = 0;
+        (function type() {
+          if (i <= full.length) {
+            body.textContent = full.slice(0, i);
+            i++;
+            setTimeout(type, 26);
+          } else {
+            setTimeout(function () { body.classList.remove("typing"); }, 1600);
+          }
+        })();
+      });
+    }, { threshold: 0.5 });
+    io.observe(body);
+  });
+})();

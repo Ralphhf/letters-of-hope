@@ -528,3 +528,32 @@ img.brand-mark { border-radius: 50%; object-fit: cover; background: #fff; }
 @media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } }
 .site-header { transition: box-shadow .25s ease; }
 .site-header.scrolled { box-shadow: 0 8px 28px rgba(0,0,0,.14); }
+
+/* ===== Fancy shared: progress bar, page fade, button shine ===== */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: var(--candle); z-index: 90; pointer-events: none;
+}
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+body { animation: pageIn .45s ease both; }
+body.page-exit { opacity: 0; transition: opacity .28s ease; }
+.btn { position: relative; overflow: hidden; }
+.btn::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,.4), transparent);
+  transform: skewX(-20deg); transition: left .5s ease; pointer-events: none;
+}
+.btn:hover::before { left: 130%; }
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  .btn::before { display: none; }
+}
+
+/* ===== Signature: breathing hero, 3D tilt ready ===== */
+@keyframes heroBreathe {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to { transform: translate3d(0,-24px,0) scale(1.05); }
+}
+.hero::before { animation: heroBreathe 11s ease-in-out infinite alternate; }
+.photo-frame, .quote-chip { will-change: transform; }
+@media (prefers-reduced-motion: reduce) { .hero::before { animation: none; } }

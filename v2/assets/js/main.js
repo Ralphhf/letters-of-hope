@@ -241,3 +241,66 @@
     document.querySelectorAll(".stat b, .bigstat b").forEach(function (b) { statIo.observe(b); });
   });
 })();
+
+/* ===== Fancy shared: scroll progress + page transitions ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function onReady(fn) {
+    if (document.readyState !== "loading") { fn(); } else { document.addEventListener("DOMContentLoaded", fn); }
+  }
+  onReady(function () {
+    // Scroll progress bar
+    var bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.appendChild(bar);
+    function paint() {
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+    }
+    window.addEventListener("scroll", paint, { passive: true });
+    paint();
+
+    // Soft page transitions on internal links
+    if (!reduce) {
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest ? e.target.closest("a") : null;
+        if (!a) return;
+        var href = a.getAttribute("href");
+        if (!href || href.charAt(0) === "#" || a.target === "_blank" ||
+            /^(https?:|mailto:|tel:)/.test(href)) return;
+        e.preventDefault();
+        document.body.classList.add("page-exit");
+        setTimeout(function () { window.location.href = href; }, 260);
+      });
+      window.addEventListener("pageshow", function () {
+        document.body.classList.remove("page-exit");
+      });
+    }
+  });
+})();
+
+/* ===== Signature B: 3D mouse tilt on the hero photo ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
+  if (reduce || !fine) return;
+  document.addEventListener("DOMContentLoaded", function () {
+    var side = document.querySelector(".photo-side");
+    var frame = side && side.querySelector(".photo-frame");
+    if (!side || !frame) return;
+    side.addEventListener("mousemove", function (e) {
+      var r = side.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      frame.style.transition = "transform .12s ease-out";
+      frame.style.transform = "perspective(900px) rotateY(" + (x * 7) + "deg) rotateX(" + (y * -7) + "deg)";
+    });
+    side.addEventListener("mouseleave", function () {
+      frame.style.transition = "transform .5s ease";
+      frame.style.transform = "none";
+    });
+  });
+})();

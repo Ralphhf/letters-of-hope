@@ -241,3 +241,80 @@
     document.querySelectorAll(".stat b, .bigstat b").forEach(function (b) { statIo.observe(b); });
   });
 })();
+
+/* ===== Fancy shared: scroll progress + page transitions ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function onReady(fn) {
+    if (document.readyState !== "loading") { fn(); } else { document.addEventListener("DOMContentLoaded", fn); }
+  }
+  onReady(function () {
+    // Scroll progress bar
+    var bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.appendChild(bar);
+    function paint() {
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+    }
+    window.addEventListener("scroll", paint, { passive: true });
+    paint();
+
+    // Soft page transitions on internal links
+    if (!reduce) {
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest ? e.target.closest("a") : null;
+        if (!a) return;
+        var href = a.getAttribute("href");
+        if (!href || href.charAt(0) === "#" || a.target === "_blank" ||
+            /^(https?:|mailto:|tel:)/.test(href)) return;
+        e.preventDefault();
+        document.body.classList.add("page-exit");
+        setTimeout(function () { window.location.href = href; }, 260);
+      });
+      window.addEventListener("pageshow", function () {
+        document.body.classList.remove("page-exit");
+      });
+    }
+  });
+})();
+
+/* ===== Signature D: masked line reveal + parallax chapter numbers ===== */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.addEventListener("DOMContentLoaded", function () {
+    var h1 = document.querySelector(".poster h1");
+    if (h1 && !reduce) {
+      var parts = h1.innerHTML.split(/<br\s*\/?>/i);
+      h1.innerHTML = parts.map(function (p, i) {
+        return '<span class="pl"><span class="pl-in" style="transition-delay:' + (i * 120 + 150) + 'ms">' + p + "</span></span>";
+      }).join("");
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { h1.classList.add("play"); });
+      });
+      setTimeout(function () { h1.classList.add("play"); }, 900);
+    }
+    if (!reduce) {
+      var nums = document.querySelectorAll(".ch-num");
+      if (nums.length) {
+        var ticking = false;
+        function parallax() {
+          ticking = false;
+          var vh = window.innerHeight || 800;
+          nums.forEach(function (n) {
+            var r = n.parentNode.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > vh) return;
+            n.style.transform = "translateY(" + ((r.top - vh / 2) * -0.09).toFixed(1) + "px)";
+          });
+        }
+        window.addEventListener("scroll", function () {
+          if (!ticking) { ticking = true; requestAnimationFrame(parallax); }
+        }, { passive: true });
+        parallax();
+      }
+    }
+  });
+})();
