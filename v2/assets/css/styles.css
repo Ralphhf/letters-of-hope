@@ -1,5 +1,5 @@
 /* =========================================================
-   Letters of Hope — DRAFT B "Clarity"
+   Emmanuel AD — DRAFT B "Clarity"
    Light grey canvas, white surfaces, calm blue accent,
    clean sans type, centered hero. Quiet, modern, trustworthy.
    ========================================================= */
@@ -405,3 +405,12 @@ h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; line-height: 1
   .brand-mark { width: 27px; height: 27px; }
   .nav-cta .btn-primary { padding: .6em 1em; font-size: .86rem; }
 }
+
+/* Real logo (circular badge) */
+img.brand-mark { border-radius: 50%; object-fit: cover; background: #fff; }
+.site-header .brand-mark { width: 40px; height: 40px; }
+.site-footer .brand-mark { width: 40px; height: 40px; }
+@media (max-width: 480px) { .site-header .brand-mark { width: 34px; height: 34px; } }
+
+.nav-links a { white-space: nowrap; }
+.btn { white-space: nowrap; }

@@ -1,5 +1,5 @@
 /* =========================================================
-   Letters of Hope — Prison Ministry (design prototype)
+   Emmanuel AD — Prison Ministry (design prototype)
    Concept: "Correspondence" — the letter/envelope as identity.
    ========================================================= */
 
@@ -437,3 +437,12 @@ h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 500; line-height: 1
   .brand-mark { width: 28px; height: 28px; }
   .nav-cta .btn-primary { padding: .65em 1.1em; font-size: .88rem; }
 }
+
+/* Real logo (circular badge) */
+img.brand-mark { border-radius: 50%; object-fit: cover; background: #fff; }
+.site-header .brand-mark { width: 40px; height: 40px; }
+.site-footer .brand-mark { width: 40px; height: 40px; }
+@media (max-width: 480px) { .site-header .brand-mark { width: 34px; height: 34px; } }
+
+.nav-links a { white-space: nowrap; }
+.btn { white-space: nowrap; }

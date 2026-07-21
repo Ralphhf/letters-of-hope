@@ -1,4 +1,4 @@
-/* Letters of Hope — shared behavior + header/footer injection */
+/* Emmanuel AD — shared behavior + header/footer injection */
 (function () {
   "use strict";
 
@@ -14,13 +14,7 @@
     { href: "contact.html", label: "Contact" }
   ];
 
-  var mark =
-    '<svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">' +
-    '<rect x="3" y="11" width="34" height="24" rx="3" fill="#F7F3EA" stroke="#262550" stroke-width="2"/>' +
-    '<path d="M4 13l16 12L36 13" stroke="#262550" stroke-width="2" fill="none"/>' +
-    '<path d="M20 12c0-3 2.4-4.6 2.4-7.2C22.4 3 21.3 2 20 2c1.3 1.4-.6 2.6-.6 4.4 0 2 .6 3.2.6 5.6z" fill="#E0A03B"/>' +
-    '<circle cx="20" cy="8.5" r="2.6" fill="#E0A03B" opacity=".85"/>' +
-    "</svg>";
+  var mark = '<img class="brand-mark" src="assets/img/logo.png" alt="">';
 
   function currentPage() {
     var p = location.pathname.split("/").pop();
@@ -36,9 +30,9 @@
 
     return (
       '<header class="site-header"><div class="wrap"><nav class="nav" aria-label="Main">' +
-      '<a class="brand" href="index.html" aria-label="Letters of Hope — home">' +
+      '<a class="brand" href="index.html" aria-label="Emmanuel AD — home">' +
       mark +
-      '<span class="brand-name">Letters of <span>Hope</span></span></a>' +
+      '<span class="brand-name">Emmanuel <span>AD</span></span></a>' +
       '<ul class="nav-links" id="navLinks">' + links + "</ul>" +
       '<div class="nav-cta">' +
       '<a class="btn btn-ghost" href="write-to-prisoners.html">Write a Letter</a>' +
@@ -61,8 +55,8 @@
     return (
       '<footer class="site-footer"><div class="wrap"><div class="footer-grid">' +
       '<div><a class="brand" href="index.html">' + mark +
-      '<span class="brand-name">Letters of Hope</span></a>' +
-      "<p>A prison ministry connecting people on the outside with the incarcerated — one letter, one act of dignity at a time.</p>" +
+      '<span class="brand-name">Emmanuel AD</span></a>' +
+      "<p>God with us. Hope for all. Freedom in Christ. A prison ministry connecting people on the outside with the incarcerated.</p>" +
       '<div class="socials">' +
       '<a href="' + SOCIAL.facebook + '" aria-label="Facebook">f</a>' +
       '<a href="' + SOCIAL.instagram + '" aria-label="Instagram">ig</a>' +
@@ -78,7 +72,7 @@
       '</form><div class="form-success js-success" style="margin-top:.8rem">Thank you — you\'re on the list.</div>' +
       "</div>" +
       "</div>" +
-      '<div class="footer-bottom"><span>&copy; ' + yr + " Letters of Hope. A prison ministry.</span>" +
+      '<div class="footer-bottom"><span>&copy; ' + yr + " Emmanuel AD. A prison ministry.</span>" +
       "<span>Draft B &middot; The Clarity concept</span></div>" +
       "</div></footer>"
     );
